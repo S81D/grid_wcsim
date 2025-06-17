@@ -33,12 +33,12 @@ echo "WCSim directory contents:" >> /srv/logfile_${PART_NAME}.txt
 ls -lrth >> /srv/logfile_${PART_NAME}.txt
 echo "" >> /srv/logfile_${PART_NAME}.txt
 
-# not needed
+# for PMT-only analysis, not having the LAPPD root files decreases the number of root files (which may be > 500k by a factor of 2)
 \rm wcsim_*lappd*.root
 
 # copy any produced files to /srv for extraction
 \cp wcsim_*.root /srv/ 
-#\cp wcsim_lappd_*.root /srv/
+#\cp wcsim_lappd_*.root /srv/     # uncomment if you really need them (and remove the above 'rm' line)
 
 # make sure any output files you want to keep are put in /srv or any subdirectory of /srv 
 
