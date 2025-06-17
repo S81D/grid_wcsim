@@ -3,14 +3,14 @@ import time
 import random
 
 WCSim_loc = '/exp/annie/app/users/doran/WCSim_SD81_branch/'
-INPUT_PATH = '/pnfs/annie/scratch/users/doran/grid_wcsim_Michels_and_muons/genie_muons/'
+INPUT_PATH = '/pnfs/annie/scratch/users/doran/grid_wcsim/dirt_muons/'
 
 job_label = 'pmt_tilting_dirt_QE_1.50/'        # This will also serve as the embedded output folder
 
 # dirt muon count from GENIE files: 10000
 
 # this only ends up yielding ~400 dirt muon candidates, and even less Michels. 
-# We need to randomly sample the dirt muons to simulate way more events. 
+# We need to randomly sample the dirt muons to simulate way more events (~500k). 
 
 ####################
 events_per_job = 500
