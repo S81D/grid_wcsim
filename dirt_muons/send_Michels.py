@@ -2,6 +2,9 @@ import os
 import time
 import random
 
+# Submit dirt muons to simulate beam-realistic Michel electrons
+# The jobs will sample the dirt muon txt file which is pulled from GENIE muons that only pass the FMV + Tank (no MRD) geometry in the WORLD samples
+
 WCSim_loc = '/exp/annie/app/users/doran/WCSim_SD81_branch/'
 INPUT_PATH = '/pnfs/annie/scratch/users/doran/grid_wcsim/dirt_muons/'
 
