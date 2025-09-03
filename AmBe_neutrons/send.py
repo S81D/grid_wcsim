@@ -125,17 +125,17 @@ def create_macro(WCSim_loc, job_label, events_per_job):
     elif job_label == 'port1_zminus100' + str(QE_tag):
         source_pos = '/gps/pos/centre 0 -114.46487518 93.1 cm\n'
 
-    # port 4 (x = -75, z = 0)
+    # port 4 (x = +75, z = 0)
     elif job_label == 'port4_z0' + str(QE_tag):
-        source_pos = '/gps/pos/centre -75 -14.46487518 168.1 cm\n'
+        source_pos = '/gps/pos/centre 75 -14.46487518 168.1 cm\n'
     elif job_label == 'port4_z50' + str(QE_tag):
-        source_pos = '/gps/pos/centre -75 35.53512482 168.1 cm\n'
+        source_pos = '/gps/pos/centre 75 35.53512482 168.1 cm\n'
     elif job_label == 'port4_z100' + str(QE_tag):
-        source_pos = '/gps/pos/centre -75 85.53512482 168.1 cm\n'
+        source_pos = '/gps/pos/centre 75 85.53512482 168.1 cm\n'
     elif job_label == 'port4_zminus50' + str(QE_tag):
-        source_pos = '/gps/pos/centre -75 -64.46487518 168.1 cm\n'
+        source_pos = '/gps/pos/centre 75 -64.46487518 168.1 cm\n'
     elif job_label == 'port4_zminus100' + str(QE_tag):
-        source_pos = '/gps/pos/centre -75 -114.46487518 168.1 cm\n'
+        source_pos = '/gps/pos/centre 75 -114.46487518 168.1 cm\n'
 
     # port 5 (x = 0, z = 0)
     elif job_label == 'port5_z0' + str(QE_tag):
