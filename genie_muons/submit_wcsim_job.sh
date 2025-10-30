@@ -1,7 +1,7 @@
 RUN=$1
 BATCH=$2
 
-export INPUT_PATH=/pnfs/annie/scratch/users/doran/grid_wcsim/                  
+export INPUT_PATH=/pnfs/annie/scratch/{USER}/doran/grid_wcsim/                  
 
 echo ""
 echo "submitting job..."
@@ -9,7 +9,7 @@ echo ""
 
 QUEUE=medium 
 
-OUTPUT_FOLDER=/pnfs/annie/scratch/users/doran/output/genie_muons/${BATCH}
+OUTPUT_FOLDER=/pnfs/annie/scratch/users/{USER}/output/genie_muons/${BATCH}
 mkdir -p $OUTPUT_FOLDER                                                 
 
 # wrapper script to submit your grid job
