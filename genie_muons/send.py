@@ -1,8 +1,10 @@
 import os,sys
 import time
 
-WCSim_loc = '/exp/annie/app/users/doran/grid_wcsim/'
-INPUT_PATH = '/pnfs/annie/scratch/users/doran/grid_wcsim/'
+user = '{user}'
+
+WCSim_loc = '/exp/annie/app/users/' + user + '/grid_wcsim/'
+INPUT_PATH = '/pnfs/annie/scratch/users/' + user + '/grid_wcsim/'
 
 job_label = 'blacksheet_plus/'        # This will also serve as the embedded output folder
 
