@@ -14,7 +14,7 @@ import os, re, time
 wcsim_file_path = '/pnfs/annie/scratch/users/doran/output/genie_wcsim/'     # generated wcsim root files from the grid
 genie_file_path = '/pnfs/annie/persistent/simulations/genie3/G1810a0211a/standardv1.0/world/'    # GENIE samples
 
-INPUT_PATH = '/pnfs/annie/scratch/users/doran/ToolChain_GENIE_MC_samples/'    # input path for submission scripts
+INPUT_PATH = '/pnfs/annie/scratch/users/doran/grid_wcsim/MC_GENIE_toolchain/'    # input path for submission scripts
 OUTPUT_FOLDER = '/pnfs/annie/scratch/users/doran/output/genie_toolchain/'    # grid output
 
                         # how many WCSim and GENIE files do you expect to have
