@@ -3,7 +3,7 @@
 
 RUN=$1
 
-export INPUT_PATH=/pnfs/annie/scratch/users/doran/submit_MC_toolchain/
+export INPUT_PATH=/pnfs/annie/scratch/users/doran/grid_wcsim/submit_MC_toolchain/
 export OUTPUT_FOLDER=/pnfs/annie/scratch/users/doran/output/genie_muons/Trees/thru/individual_tilt/
 export WCSIM_FILES_PATH=/pnfs/annie/scratch/users/doran/output/genie_muons/thru_individual_tilts/
 
