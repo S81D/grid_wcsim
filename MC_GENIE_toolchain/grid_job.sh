@@ -10,7 +10,12 @@ output   dir: $CONDOR_DIR_OUTPUT
 EOF
 
 HOSTNAME=$(hostname -f)
+
+# ****************************************************** #
+# adjust accordingly!
 GRIDUSER="doran"
+TA_folder=NC_CC_Nov_6_2025
+# ****************************************************** #
 
 # part name
 FIRST_ARG=$1
@@ -55,14 +60,14 @@ echo "" >> ${DUMMY_OUTPUT_FILE}
 echo "There seems to be 1 WCSim file and 1 GENIE file present. Proceeding..." >> ${DUMMY_OUTPUT_FILE} 
 echo "" >> ${DUMMY_OUTPUT_FILE} 
 
-# copy wcsim and genie files to local directory (*** change accordingly ***)
-\cp /srv/wcsim* /srv/MC_waveform_sim/
-\cp /srv/gntp* /srv/MC_waveform_sim/
+# copy wcsim and genie files to local directory
+\cp /srv/wcsim* /srv/${TA_folder}/
+\cp /srv/gntp* /srv/${TA_folder}/
 
 echo "" >> ${DUMMY_OUTPUT_FILE} 
 echo "Are the wcsim and GENIE files in the local directory?" >> ${DUMMY_OUTPUT_FILE} 
-ls -lrth /srv/MC_waveform_sim/wcsim* >> ${DUMMY_OUTPUT_FILE} 
-ls -lrth /srv/MC_waveform_sim/gntp* >> ${DUMMY_OUTPUT_FILE} 
+ls -lrth /srv/${TA_folder}/wcsim* >> ${DUMMY_OUTPUT_FILE} 
+ls -lrth /srv/${TA_folder}/gntp* >> ${DUMMY_OUTPUT_FILE} 
 echo "" >> ${DUMMY_OUTPUT_FILE} 
 
 
@@ -95,7 +100,7 @@ ls -v /srv >> ${DUMMY_OUTPUT_FILE}
 rm /srv/*.root
 rm /srv/*.txt
 rm /srv/*.sh
-rm -rf /srv/MC_waveform_sim/   (*** adjust accordingly ***)
+rm -rf /srv/${TA_folder}/
 
 echo "" >> ${DUMMY_OUTPUT_FILE}
 echo "Leftovers:" >> ${DUMMY_OUTPUT_FILE}
