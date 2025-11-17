@@ -10,7 +10,11 @@ output   dir: $CONDOR_DIR_OUTPUT
 EOF
 
 HOSTNAME=$(hostname -f)
-GRIDUSER="doran"
+
+# ****************************************************** #
+GRIDUSER="doran"               # adjust accordingly!
+TA_folder=NC_CC_Nov_6_2025     # adjust accordingly!
+# ****************************************************** #
 
 # part name
 FIRST_ARG=$1
@@ -75,7 +79,7 @@ ls -v /srv >> ${DUMMY_OUTPUT_FILE}
 rm /srv/*.root
 rm /srv/*.txt
 rm /srv/*.sh
-rm -rf /srv/MC_waveform_sim/
+rm -rf /srv/${TA_folder}/
 
 echo "" >> ${DUMMY_OUTPUT_FILE}
 echo "Leftovers:" >> ${DUMMY_OUTPUT_FILE}
