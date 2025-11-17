@@ -1,6 +1,8 @@
 # grid_wcsim
 Submitting WCSim grid jobs. Tailored for the MC tuning analysis involving AmBe neutrons, Michel electrons, and throughgoing muons. Also includes grid scripts for running MC toolchains over the WCSim (and GENIE) files.
 
+PLEASE modify all paths accordingly - or else they may dump into my user area :) 
+
 ## Contents
 
 - `AmBe_neutrons/` contains submission scripts for generating AmBe-like neutrons in WCSim. `send.py` will send jobs for 4 port positions (1, 5, 4, and 3, to match the 2024 AmBe calibration campaign) at all depths [-100:100cm, 50cm increments]. No AmBe housing is currently simulated. Neutron energy spectrum used is found in `AmBe_spectrum.dat`, pulled from Johann's work with RATPAC. 
