@@ -3,17 +3,23 @@
 
 RUN=$1
 
+# ****************************************************** #
+# adjust accordingly!
+TA_folder=NC_CC_Nov_6_2025
+TC_name=PMTWaveformSim
+# ****************************************************** #
+
 # logfile
 touch /srv/logfile_${RUN}.txt
 pwd >> /srv/logfile_${RUN}.txt
 ls -v >> /srv/logfile_${RUN}.txt
 echo "" >> /srv/logfile_${RUN}.txt
 
-# enter ToolAnalysis directory (*** change accordingly ***)
-cd MC_waveform_sim/
+# enter ToolAnalysis directory
+cd ${TA_folder}/
 
-# run config script
-cd configfiles/PMTWaveformSim
+# run config script (if needed)
+cd configfiles/${TC_name}
 python3 config_GENIE.py ${RUN}
 echo "PhaseIITreeMaker config:" >> /srv/logfile_${RUN}.txt
 echo "------------------------" >> /srv/logfile_${RUN}.txt
@@ -29,7 +35,7 @@ cd ../../
 source Setup.sh
 
 # Run the toolchain, and output verbose to log file
-./Analyse configfiles/PMTWaveformSim/ToolChainConfig >> /srv/logfile_${RUN}.txt 2>&1 
+./Analyse configfiles/${TC_name}/ToolChainConfig >> /srv/logfile_${RUN}.txt 2>&1 
 
 # log files
 echo "" >> /srv/logfile_${RUN}.txt
