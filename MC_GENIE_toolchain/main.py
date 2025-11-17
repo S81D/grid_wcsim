@@ -78,7 +78,7 @@ for i in range(len(valid_files)):
     # Call submission script
     print(f"\n*************************************************\nSubmitting job for file {run_numbers[i]}")
     os.system(submission_script + ' ' + str(run_numbers[i]) + ' ' + INPUT_PATH + ' ' + OUTPUT_FOLDER + ' ' + wcsim_file + ' ' + genie_file)
-
+    print('Submission script arguments:\n' + str(run_numbers[i]) + ' ' + INPUT_PATH + ' ' + OUTPUT_FOLDER + ' ' + wcsim_file + ' ' + genie_file)
     time.sleep(0.1)   # in case you screw up and need to kill the loop (Ctrl+C)
 
 
