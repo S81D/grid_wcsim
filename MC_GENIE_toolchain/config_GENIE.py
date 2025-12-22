@@ -1,5 +1,8 @@
 import sys
 
+# this script will execute on the grid
+# it is used to populate the TreeMaker + LoadWCSim with the correct file names
+
 run = sys.argv[1]
 
 def LoadWCSim(run):
