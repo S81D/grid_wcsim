@@ -22,8 +22,8 @@ echo "" >> /srv/logfile_${PART_NAME}.txt
 
 echo "running WCSim..." >> /srv/logfile_${PART_NAME}.txt
 
-# Run the toolchain, and output verbose to log file 
-./WCSim WCSim.mac >> /srv/logfile_${PART_NAME}.txt
+# Run the toolchain, and output verbose to log file (stderr captured too)
+./WCSim WCSim.mac >> /srv/logfile_${PART_NAME}.txt 2>&1
 
 echo "" >> /srv/logfile_${PART_NAME}.txt
 echo "-----------------------------------------" >> /srv/logfile_${PART_NAME}.txt 
@@ -37,7 +37,7 @@ echo "" >> /srv/logfile_${PART_NAME}.txt
 
 # copy any produced files to /srv for extraction
 cp wcsim_0.root /srv/wcsim_${PART_NAME}.root 
-#cp wcsim_lappd_0.root /srv/wcsim_lappd_${PART_NAME}.root
+cp wcsim_lappd_0.root /srv/wcsim_lappd_${PART_NAME}.root
 
 # make sure any output files you want to keep are put in /srv or any subdirectory of /srv 
 
