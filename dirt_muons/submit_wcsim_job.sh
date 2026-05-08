@@ -1,13 +1,13 @@
 RUN=$1
 BATCH=$2
 
-export INPUT_PATH=/pnfs/annie/scratch/users/doran/grid_wcsim_Michels_and_muons/genie_muons/                  
+export INPUT_PATH=/pnfs/annie/scratch/users/dajana/grid_wcsim/dirt_muons/
 
 echo ""
 echo "submitting job..."
 echo ""
 
-OUTPUT_FOLDER=/pnfs/annie/scratch/users/doran/output/genie_muons/${BATCH}
+OUTPUT_FOLDER=/pnfs/annie/scratch/users/dajana/output/dirt_muons/${BATCH}
 mkdir -p $OUTPUT_FOLDER                                                 
 
 # wrapper script to submit your grid job

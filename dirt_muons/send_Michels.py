@@ -5,10 +5,10 @@ import random
 # Submit dirt muons to simulate beam-realistic Michel electrons
 # The jobs will sample the dirt muon txt file which is pulled from GENIE muons that only pass the FMV + Tank (no MRD) geometry in the WORLD samples
 
-WCSim_loc = '/exp/annie/app/users/doran/WCSim_SD81_branch/'
-INPUT_PATH = '/pnfs/annie/scratch/users/doran/grid_wcsim/dirt_muons/'
+WCSim_loc = '/exp/annie/app/users/dajana/'
+INPUT_PATH = '/pnfs/annie/scratch/users/dajana/grid_wcsim/dirt_muons/'
 
-job_label = 'pmt_tilting_dirt_QE_1.50/'        # This will also serve as the embedded output folder
+job_label = 'test/'        # This will also serve as the embedded output folder
 
 # dirt muon count from GENIE files: 10000
 
@@ -16,9 +16,9 @@ job_label = 'pmt_tilting_dirt_QE_1.50/'        # This will also serve as the emb
 # We need to randomly sample the dirt muons to simulate way more events (~500k). 
 
 ####################
-events_per_job = 500
+events_per_job = 10
 ####################
-N_jobs = 1000
+N_jobs = 1
 ####################
 total_events = int(N_jobs*events_per_job)
 
