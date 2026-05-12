@@ -15,13 +15,15 @@ echo "" >> /srv/logfile_${PART_NAME}.txt
 # source setup script
 source sourceme >> /srv/logfile_${PART_NAME}.txt
 chmod +x WCSim
+# add cwd so libWCSimRoot.so from the extracted tar is found (pnfs not mounted in container)
+export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH
 
 echo "" >> /srv/logfile_${PART_NAME}.txt
 
 echo "running WCSim..." >> /srv/logfile_${PART_NAME}.txt
 
-# Run the toolchain, and output verbose to log file 
-./WCSim WCSim.mac >> /srv/logfile_${PART_NAME}.txt
+# Run the toolchain, and output verbose to log file (stderr captured too)
+./WCSim WCSim.mac >> /srv/logfile_${PART_NAME}.txt 2>&1
 
 echo "" >> /srv/logfile_${PART_NAME}.txt
 echo "-----------------------------------------" >> /srv/logfile_${PART_NAME}.txt 

@@ -5,8 +5,13 @@ import random
 # Submit dirt muons to simulate beam-realistic Michel electrons
 # The jobs will sample the dirt muon txt file which is pulled from GENIE muons that only pass the FMV + Tank (no MRD) geometry in the WORLD samples
 
-WCSim_loc = '/exp/annie/app/users/dajana/'
+WCSim_loc = '/pnfs/annie/persistent/users/dajana/'
 INPUT_PATH = '/pnfs/annie/scratch/users/dajana/grid_wcsim/dirt_muons/'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_PATH = BASE_DIR + '/'
+LOCAL_TARBALL = os.path.join(BASE_DIR, 'WCSim.tar.gz')
+SUBMIT_PATH = os.path.join(BASE_DIR, 'submit')
+SUBMIT_SCRIPT = os.path.join(BASE_DIR, 'submit_wcsim_job.sh')
 
 job_label = 'test/'        # This will also serve as the embedded output folder
 
@@ -31,7 +36,7 @@ print('\n')
 
 def load_genie():
 
-    txt_file = 'dirt_muons_genie.txt'
+    txt_file = os.path.join(BASE_DIR, 'dirt_muons_genie.txt')
 
     # Reading the .txt file
     with open(txt_file, 'r') as file:
@@ -50,9 +55,10 @@ def load_genie():
 def create_macro(start, end, energy, direction, position):
 
     job_number = str(start) + '_' + str(end)
-    os.system('rm -rf submit/' + job_number)
-    os.system('mkdir -p submit/' + job_number)
-    file = open('submit/' + job_number + '/WCSim.mac', "w")
+    job_dir = os.path.join(SUBMIT_PATH, job_number)
+    os.system('rm -rf ' + job_dir)
+    os.system('mkdir -p ' + job_dir)
+    file = open(os.path.join(job_dir, 'WCSim.mac'), "w")
 
     preamble = """#!/bin/sh 
 
@@ -170,20 +176,36 @@ for i in range(N_jobs):
 
 time.sleep(1)
 
-# tar WCSim
+# tar WCSim from persistent pnfs (same build used for AmBe — same binary, same sourceme)
 print('\ntar-ing WCSim for grid submission...\n')
-os.system('rm -rf WCSim.tar.gz')   # remove old tar file
-os.system('cd ' + WCSim_loc)
-os.system('tar -czvf WCSim.tar.gz -C ' + WCSim_loc + ' WCSim')
+os.system('rm -rf ' + LOCAL_TARBALL)
+os.system('tar -czvf ' + LOCAL_TARBALL + ' --exclude="wcsim*.root" -C ' + WCSim_loc + ' WCSim')
 time.sleep(1)
 
+# Stage shared files to pnfs scratch (accessible from grid workers)
+# pnfs requires ifdh cp — regular cp is not permitted
+print('\nStaging files to pnfs scratch...\n')
+os.system('ifdh mkdir_p ' + INPUT_PATH)
+os.system('ifdh cp ' + LOCAL_TARBALL + ' ' + INPUT_PATH + 'WCSim.tar.gz')
+os.system('ifdh cp ' + SCRIPT_PATH + 'wcsim_container.sh ' + INPUT_PATH + 'wcsim_container.sh')
+os.system('ifdh cp ' + SCRIPT_PATH + 'run_job.sh ' + INPUT_PATH + 'run_job.sh')
+
+# Stage per-job mac files to pnfs scratch
+print('\nStaging per-job WCSim.mac files to pnfs scratch...\n')
+for i in range(N_jobs):
+    starting_event = i*events_per_job
+    ending_event = (i+1)*events_per_job - 1
+    job_number = str(starting_event) + '_' + str(ending_event)
+    os.system('ifdh mkdir_p ' + INPUT_PATH + 'submit/' + job_number)
+    os.system('ifdh cp ' + os.path.join(SUBMIT_PATH, job_number, 'WCSim.mac') + ' ' + INPUT_PATH + 'submit/' + job_number + '/WCSim.mac')
+time.sleep(1)
 
 print('\nSending jobs...\n')
 for i in range(N_jobs):
     starting_event = i*events_per_job
     ending_event = (i+1)*events_per_job - 1
     print('\n########## ' + str(starting_event) + '_' + str(ending_event) + ' ###########\n')
-    os.system('sh submit_wcsim_job.sh ' + str(starting_event) + '_' + str(ending_event) + ' ' + job_label)
+    os.system('sh ' + SUBMIT_SCRIPT + ' ' + str(starting_event) + '_' + str(ending_event) + ' ' + job_label)
 
 
 print('\nJobs sent\n')

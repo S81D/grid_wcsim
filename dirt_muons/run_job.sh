@@ -70,7 +70,7 @@ singularity exec -B/srv:/srv /cvmfs/singularity.opensciencegrid.org/anniesoft/wc
 
 # cleanup and move files to $CONDOR_OUTPUT after leaving singularity environment
 echo "Moving the output files to CONDOR OUTPUT..." >> ${DUMMY_OUTPUT_FILE} 
-#${JSB_TMP}/ifdh.sh cp -D /srv/logfile* $CONDOR_DIR_OUTPUT         # log files (uncomment if needed)
+${JSB_TMP}/ifdh.sh cp -D /srv/logfile* $CONDOR_DIR_OUTPUT         # log files
 ${JSB_TMP}/ifdh.sh cp -D /srv/wcsim_*.root $CONDOR_DIR_OUTPUT
 #${JSB_TMP}/ifdh.sh cp -D /srv/wcsim_lappd_*.root $CONDOR_DIR_OUTPUT   # uncomment if you need LAPPD file
 

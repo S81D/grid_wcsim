@@ -14,14 +14,14 @@ import subprocess
 
 ''' Please modify the following to reflect your working directory '''
 
-wcsim_file_path = '/pnfs/annie/scratch/users/doran/output/genie_muons/pmt_tilting_dirt_QE_1.50_HM_1.50_2/'     # wcsim root files from the grid
+wcsim_file_path = '/pnfs/annie/scratch/users/dajana/output/dirt_muons/test/'     # wcsim root files from the grid
 
 # from previous jobs
-events_per_job = 500    # match wcsim root jobs
-N_jobs = 1000           # total number of jobs sent / present
+events_per_job = 10     # match wcsim root jobs (10 for test, 500 for production)
+N_jobs = 1              # total number of jobs sent / present (1 for test, 1000 for production)
 
 # for current grid submission
-files_per_job = 500
+files_per_job = 1
 J = N_jobs
 
 # Pattern to extract Ni, Nf, M
