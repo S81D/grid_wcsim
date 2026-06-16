@@ -91,12 +91,8 @@ else
     RESOURCE_ARGS="--resource-provides=usage_model=OFFSITE --blacklist=Omaha,Swan,Wisconsin,SU-ITS,RAL"
 fi
 
-# If re-doing runs, include them in this list
-#redoruns=(4661)
-#for RUN in "${redoruns[@]}"
 
-# Alternatively, send a batch
-for RUN in {0..9}
+for RUN in ${RUNS}
 do
     echo ""
     if [ ! -f "${FLUX_FOLDER}/gsimple_flux_${RUN}.root" ]; then
@@ -119,7 +115,7 @@ do
             -f "${FLUX_FOLDER}/gsimple_flux_${RUN}.root" \
             -f "${INPUT_FOLDER}/lib/rub_the_lamp.sh" \
             -f "${INPUT_FOLDER}/lib/Setup_GENIE.sh" \
-            "$EXTRA_FILES" \
+            ${EXTRA_FILES} \
             -d OUTPUT "${OUTPUT_FOLDER}" \
             file://"${INPUT_FOLDER}"/lib/GENIE_grid.sh \
             "$RUN" \

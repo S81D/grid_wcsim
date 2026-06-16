@@ -5,11 +5,13 @@ ANNIE's official GENIE repository (https://github.com/ANNIEsoft/GENIE-v3) and th
 
 ## Overview (powered by Claude AI)
 
-This repository provides grid submission scripts for running GENIE neutrino interaction simulations for the ANNIE experiment. Jobs are submitted to the Fermilab grid via `jobsub_submit`, run inside the `anniesoft/genie3` Singularity container, and use BNB gsimple flux files with a `annie_v*.gdml` detector geometry. The scripts support running from either the official container-bundled GENIE installation or a local fork packaged as a tar archive.
+This repository provides grid submission scripts for running GENIE neutrino interaction simulations for the ANNIE experiment (`genie/`) and for running anniedirt (`anniedirt/`) - the machinery to propagate final state (FS) particles from their interaction to the active detector volume. Both of these steps are required for an end-to-end simulation pipeline which includes WCSim and ToolAnalysis.
+
+Jobs are submitted to the Fermilab grid via `jobsub_submit` and run inside the `anniesoft/genie3` and `anniesoft/anniedirt` Singularity containers. GENIE uses BNB gsimple flux files, while anniedirt uses the corresponding gntp.ghep.root files produced from GENIE. Both also use a `annie_v*.gdml` detector geometry. The GENIE scripts support running from either the official container-bundled GENIE installation or a local fork packaged as a tar archive; anniedirt scripts currently only support from running the official container-bundled installation.
 
 ---
 
-## Repository Structure
+## `genie/`
 
 | Script | Role |
 |---|---|
@@ -27,7 +29,7 @@ All scripts except `submit_GENIE_jobs.sh` live in a `lib/` subdirectory of your 
 ## Prerequisites
 
 - Access to the BNB gsimple flux files at `/pnfs/annie/persistent/users/jminock/flux/`
-- An annie geometry file - the "default" geometry file can be found [here (annie_v04.gdml)](https://github.com/ANNIEsoft/GENIE-v3/tree/master/annie)
+- An annie geometry file - the "default" geometry file can be found [here (annie_v04.gdml)](https://github.com/ANNIEsoft/GENIE-v3/tree/master/annie). A copy of a reduced geometry to boost efficiency for world event generation is given in `lib/annie_v07.gdml`
 - The `gxspl-FNALsmall.xml` cross-section spline file (too large for this repository — place it manually in `lib/`)
 
 ---
@@ -143,9 +145,85 @@ These files were produced to generate the default, existing GENIE samples. Each 
 
 ---
 
-## ANNIEDirt
+## `anniedirt/`
 
-*(documentation in progress)*
+The anniedirt scripts follow the same conventions as the `genie/` scripts above — refer to those sections for further detail.
+
+| Script | Role |
+|---|---|
+| `submit_anniedirt_jobs.sh` | Entry point — configure and submit batch jobs to the grid |
+| `g4dirt_grid.sh` | Worker node script — copies inputs, extracts GDML schemas, launches Singularity |
+| `run_g4dirt_container.sh` | Runs inside the Singularity container — calls `run_g4dirt.sh` and compresses the log |
+
+All scripts except `submit_anniedirt_jobs.sh` live in a `lib/` subdirectory of your pnfs input folder:
+
+```
+INPUT_FOLDER/
+├── submit_GENIE_jobs.sh
+└── lib/
+    ├── g4dirt_grid.sh
+    ├── run_g4dirt_container.sh
+    ├── annie_v*.gdml
+    └── gdml.tar.gz
+```
+
+> **Note:** `gdml.tar.gz` is a tar archive of the GDML XML schema files (`.xsd`) that Geant4 requires to parse the geometry at runtime. It is not produced by this repository — obtain it from a collaborator or from an existing ANNIEDirt installation and place it in `lib/` before submitting (it's provided in the `lib/` folder within this directory).
+
+Unlike the GENIE scripts, anniedirt runs exclusively through the official `anniesoft/g4dirt:latest` Singularity container. There is no local-fork support currently (TODO).
+
+---
+
+### Configuration
+
+All user-facing settings are in the `INPUTS` block at the top of `submit_anniedirt_jobs.sh`:
+
+```bash
+GRID_USER=doran             # change to reflect your username
+INPUT_FOLDER=/pnfs/annie/scratch/users/${GRID_USER}/grid_wcsim/GENIE_G4Dirt_production/anniedirt/
+OUTPUT_FOLDER=/pnfs/annie/scratch/users/${GRID_USER}/output/G4Dirt_production/
+
+GENIE_PATH=/pnfs/annie/persistent/users/${GRID_USER}/GENIE/  # path to gntp.*.ghep.root files
+
+RUNS=$(seq 0 1)     # consecutive (default)
+#RUNS=(99)          # specific re-processing
+
+LIFETIME=4          # hr
+DISK_SPACE=10       # GB
+MEMORY_SPACE=4000   # MB
+ONSITE_JOB=true
+```
+
+`GENIE_PATH` must point to the directory containing the `gntp.${RUN}.ghep.root` files produced by the GENIE workflow. Run numbers are matched one-to-one: ANNIEDirt run `N` consumes `gntp.N.ghep.root` and produces `annie_tank_flux.N.root`. Jobs whose output already exists in `OUTPUT_FOLDER` are automatically skipped.
+
+---
+
+### Running
+
+```bash
+chmod +x submit_anniedirt_jobs.sh
+source submit_anniedirt_jobs.sh
+```
+
+### What happens on the worker node
+
+1. `g4dirt_grid.sh` copies `gntp.${RUN}.ghep.root`, `annie_v07.gdml`, and `gdml.tar.gz` from `CONDOR_DIR_INPUT` to `/srv`.
+2. The GDML schema archive is extracted in-place and removed.
+3. The `anniesoft/g4dirt:latest` Singularity container is launched with `/srv` bind-mounted.
+4. Inside the container, `run_g4dirt_container.sh` sources `/home/run_g4dirt.sh`, running ANNIEDirt over the GENIE events with the specified geometry.
+5. The output log is compressed with `gzip -9`.
+6. Outputs are copied to `OUTPUT_FOLDER` via `ifdh` and `/srv` is cleaned up.
+
+---
+
+### Output Files
+
+For each run `N`, the following files are written to `OUTPUT_FOLDER`:
+
+| File | Description |
+|---|---|
+| `annie_tank_flux.N.root` | ANNIEDirt output — FS particles propagated to the tank volume |
+| `annie_tank_flux.N.log.gz` | Compressed ANNIEDirt log |
+| `N_<jobid>_dummy_output` | Job metadata log (timing, arguments, file listings) |
 
 ---
 
