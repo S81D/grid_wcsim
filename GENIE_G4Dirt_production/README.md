@@ -229,6 +229,9 @@ For each run `N`, the following files are written to `OUTPUT_FOLDER`:
 
 ## Troubleshooting
 
+**Un-zipping log files**
+`gunzip *.log.gz*`, which will leave you with a corresponding `*.log` file.
+
 **Missing input file at submission**
 The pre-flight check in `submit_GENIE_jobs.sh` will print the missing path and exit before any jobs are submitted.
 
