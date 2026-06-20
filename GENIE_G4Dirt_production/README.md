@@ -79,7 +79,7 @@ GENIE_TAR_NAME=GENIE.tar.gz
 GENIE_FOLDER_NAME=GENIE-v3-O16
 
 RUNS=$(seq 0 1)             # consecutive (default)
-#RUNS=(99)                  # specific re-processing
+#RUNS="435 2282"            # specific re-processing
 
 LIFETIME=4                  # job lifetime in hours
 DISK_SPACE=10               # GB per job
@@ -185,7 +185,7 @@ OUTPUT_FOLDER=/pnfs/annie/scratch/users/${GRID_USER}/output/G4Dirt_production/
 GENIE_PATH=/pnfs/annie/persistent/users/${GRID_USER}/GENIE/  # path to gntp.*.ghep.root files
 
 RUNS=$(seq 0 1)     # consecutive (default)
-#RUNS=(99)          # specific re-processing
+#RUNS="435 2282"    # specific re-processing
 
 LIFETIME=4          # hr
 DISK_SPACE=10       # GB
