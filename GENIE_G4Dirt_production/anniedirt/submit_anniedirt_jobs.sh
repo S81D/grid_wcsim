@@ -13,9 +13,9 @@ GENIE_PATH=/pnfs/annie/persistent/users/${GRID_USER}/GENIE/
 # ---------------------------------------------------- #
 # RUN PRODUCTION (enable ONE of the following)
 
-RUNS=$(seq 0 1)     # consecutive (default)
+RUNS=$(seq 0 1)        # consecutive (default)
 
-#RUNS=(99)          # specific re-processing
+#RUNS="435 2282"       # specific re-processing
 # ---------------------------------------------------- #
 
 # Job properties 
