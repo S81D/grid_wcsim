@@ -21,6 +21,8 @@ Jobs are submitted to the Fermilab grid via `jobsub_submit` and run inside the `
 | `run_annie_genie.sh` | Calls `gevgen_fnal`, handles geometry, flux window, fiducial cuts, and output |
 | `Setup_GENIE.sh` | Configures environment variables for a local fork of GENIE (only sourced when `USE_LOCAL_GENIE=true`) |
 | `tar_GENIE.py` | Tar generation script for local GENIE fork |
+| `missing_ghep.py` | Displays a missing file report following grid submission, telling the user which files need to be re-submitted and which are ready for transfer. |
+| `copy_genie_output.sh` | Transfer script to copy grid output files from `scratch/` to a more persistent location. |
 
 All scripts except `submit_GENIE_jobs.sh` live in a `lib/` subdirectory of your pnfs input folder (see below).
 
@@ -44,6 +46,8 @@ INPUT_FOLDER/
 ├── submit_GENIE_jobs.sh
 └── lib/
     ├── GENIE_grid.sh
+    ├── copy_genie_output.sh
+    ├── missing_ghep.py
     ├── rub_the_lamp.sh
     ├── run_annie_genie.sh
     ├── Setup_GENIE.sh    # only needed if USE_LOCAL_GENIE=true
@@ -137,6 +141,8 @@ echo "run,pot" > pot_summary.csv
 cat pot_*.csv >> pot_summary.csv
 ```
 
+You can also run a post-job report using `python3 missing_ghep.py <scratch_path> <run_start> <run_end>` for information on which jobs are complete and which should be re-submitted (failed). To initiate the copying of files from `scratch/` to a more persistent location, run `./copy_genie_output.sh <scratch_path> <persistent_path>`.
+
 ### Up to date flux files for ANNIE
 
 The most up to date flux files live in James Minock's area: `/pnfs/annie/persistent/users/jminock/flux/`
@@ -154,6 +160,8 @@ The anniedirt scripts follow the same conventions as the `genie/` scripts above 
 | `submit_anniedirt_jobs.sh` | Entry point — configure and submit batch jobs to the grid |
 | `g4dirt_grid.sh` | Worker node script — copies inputs, extracts GDML schemas, launches Singularity |
 | `run_g4dirt_container.sh` | Runs inside the Singularity container — calls `run_g4dirt.sh` and compresses the log |
+| `missing_dirt.py` | Displays a missing file report following grid submission, telling the user which files need to be re-submitted and which are ready for transfer. |
+| `copy_dirt_output.sh` | Transfer script to copy grid output files from `scratch/` to a more persistent location. |
 
 All scripts except `submit_anniedirt_jobs.sh` live in a `lib/` subdirectory of your pnfs input folder:
 
@@ -163,6 +171,8 @@ INPUT_FOLDER/
 └── lib/
     ├── g4dirt_grid.sh
     ├── run_g4dirt_container.sh
+    ├── copy_dirt_output.sh
+    ├── missing_dirt.py
     ├── annie_v*.gdml
     └── gdml.tar.gz
 ```
@@ -212,6 +222,8 @@ source submit_anniedirt_jobs.sh
 4. Inside the container, `run_g4dirt_container.sh` sources `/home/run_g4dirt.sh`, running ANNIEDirt over the GENIE events with the specified geometry.
 5. The output log is compressed with `gzip -9`.
 6. Outputs are copied to `OUTPUT_FOLDER` via `ifdh` and `/srv` is cleaned up.
+
+You can run a post-job report using `python3 missing_dirt.py <scratch_path> <run_start> <run_end>` for information on which jobs are complete and which should be re-submitted (failed). To initiate the copying of files from `scratch/` to a more persistent location, run `./copy_dirt_output.sh <scratch_path> <persistent_path>`.
 
 ---
 
