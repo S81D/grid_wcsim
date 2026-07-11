@@ -34,7 +34,7 @@ export TOPVOL=""
 
 # which parameter set in BNBFlux.xml to use
 # ANNIE-tank or ANNIE-rock (wider window)
-export FLXPSET="ANNIE-tank"
+export FLXPSET="ANNIE-rock"
 
 export GDML=./annie_v07.gdml
 export UNITS="-L mm -D g_cm3"
@@ -196,7 +196,7 @@ process_args() {
   if [ $dorock -ne 0 ]; then
     TOPVOL="WORLD_LV"
     FLXPSET="ANNIE-rock"
-    ZMIN="-1000"  # start at z = -20m  (given in geom units cm)
+    ZMIN="-10"  # start at z = -20m  (given in geom units cm)
   fi
 
   # show the defaults correctly now
